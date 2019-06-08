@@ -15,28 +15,54 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+
+import com.asciimovie.drxzt.asciimovie.util.ClientUploadUtils;
+
 import java.io.File;
+import java.io.IOException;
+import java.util.concurrent.TimeUnit;
+
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 
 public class MainActivity extends AppCompatActivity {
 
     private Button changeButton;
+    private Button chooseButton;
     private ImageView gifImage;
 
 
     private static final int CROP_PHOTO = 102;
     private File tempFile;
+    private Uri ImgUrl;
+    private ClientUploadUtils clientUploadUtils;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        chooseButton=findViewById(R.id.Choose_button);
         changeButton=(Button)findViewById(R.id.change_button);
         gifImage=(ImageView)findViewById(R.id.GifImage);
 
         initData(savedInstanceState);
-        gifImage.setOnClickListener(new View.OnClickListener() {
+        chooseButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 showChooseDialog();
+            }
+        });
+
+        changeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                try {
+                   String json = clientUploadUtils.upload("localhost:8080/index/",ImgUrl);
+                }catch (Exception e){
+                    toast("文件上传异常");
+                }
             }
         });
     }
@@ -65,6 +91,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+
     private void showChooseDialog() {
         new AlertDialog.Builder(this)
                 .setCancelable(true)
@@ -87,6 +114,7 @@ public class MainActivity extends AppCompatActivity {
         if (savedInstanceState != null && savedInstanceState.containsKey("tempFile")) {
             tempFile = (File) savedInstanceState.getSerializable("tempFile");
         }else{
+            toast(checkDirPath(Environment.getExternalStorageDirectory().getPath()+"/asciiMovie/image/"));
             tempFile = new File(checkDirPath(Environment.getExternalStorageDirectory().getPath()+"/asciiMovie/image/"),
                     System.currentTimeMillis() + ".jpg");
         }
@@ -104,13 +132,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setPicToView(Intent picdata) {
-        Uri uri = picdata.getData();
-        if (uri == null) {
+        ImgUrl = picdata.getData();
+        if (ImgUrl== null) {
             Log.d("MainActivity","url为空");
             toast("url为空");
             return;
         }
-        gifImage.setImageURI(uri);
+        gifImage.setImageURI(ImgUrl);
+        ImgUrl.getPath();
 
     }
 
