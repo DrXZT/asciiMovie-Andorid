@@ -1,9 +1,12 @@
 package com.asciimovie.drxzt.asciimovie.util;
 
+import android.database.Cursor;
 import android.net.Uri;
+import android.provider.MediaStore;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.StringReader;
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -21,10 +24,11 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 import okhttp3.ResponseBody;
 
+
+
 public class ClientUploadUtils {
-    public String upload(String url, Uri fileUrl) throws Exception {
+    public String upload(String url, Uri fileUrl,String filePath) throws Exception {
         String fileName=getFileName(fileUrl.toString());
-        String filePath=fileUrl.getPath();
         OkHttpClient client = new OkHttpClient();
         RequestBody requestBody = new MultipartBody.Builder()
                 .setType(MultipartBody.FORM)
@@ -43,6 +47,7 @@ public class ClientUploadUtils {
 
         return response.body().string();
     }
+
 
     public static String getFileName(String url) {
         String filename = "";
