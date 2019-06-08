@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">AscIIMovie</string>
+    <string name="gif">上传一张gif动图，我们将为你转换为有趣的</string>
+    <string name="SelectImage">选择图片</string>
+    <string name="Changeimage">一键转换</string>
+    <string name="giffun">GifFun</string>
+    <string name="gif_ascii"><![CDATA[Gif-->ASCII]]></string>
+    <string name="acsii">动态ACSII码图</string>
+    <string name="todo">TODO</string>
 </resources>
