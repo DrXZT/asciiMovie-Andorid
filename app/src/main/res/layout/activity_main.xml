@@ -12,53 +12,42 @@
         android:layout_width="304dp"
         android:layout_height="480dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="52dp"
         android:layout_marginEnd="8dp"
         android:background="@drawable/view_circle_shape"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.476"
+        app:layout_constraintHorizontal_bias="0.494"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView_GifFun" />
-
-    <ImageView
-        android:id="@+id/GifImage"
-        android:layout_width="224dp"
-        android:layout_height="212dp"
-        android:layout_marginTop="32dp"
-        android:contentDescription="@string/todo"
-        app:layout_constraintEnd_toEndOf="@+id/view"
-        app:layout_constraintStart_toStartOf="@+id/view"
-        app:layout_constraintTop_toBottomOf="@+id/textView_Gif"
-        app:srcCompat="@android:drawable/ic_menu_gallery" />
 
     <Button
         android:id="@+id/Choose_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="52dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginStart="48dp"
+        android:layout_marginTop="28dp"
         android:background="@drawable/button_circle_shape"
         android:text="@string/SelectImage"
         android:textColor="#FFFFFF"
         android:textSize="16sp"
         app:layout_constraintStart_toStartOf="@+id/view"
-        app:layout_constraintTop_toBottomOf="@+id/GifImage" />
+        app:layout_constraintTop_toBottomOf="@+id/gifView" />
 
     <Button
         android:id="@+id/change_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="28dp"
         android:layout_marginEnd="8dp"
         android:background="@drawable/button_circle_shape"
         android:text="@string/Changeimage"
         android:textColor="#FFFFFF"
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="@+id/view"
-        app:layout_constraintHorizontal_bias="0.347"
+        app:layout_constraintHorizontal_bias="0.39"
         app:layout_constraintStart_toEndOf="@+id/Choose_button"
-        app:layout_constraintTop_toBottomOf="@+id/GifImage" />
+        app:layout_constraintTop_toBottomOf="@+id/gifView" />
 
     <TextView
         android:id="@+id/textView_GifFun"
@@ -105,9 +94,23 @@
         android:layout_width="119dp"
         android:layout_height="106dp"
         android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="@+id/GifImage"
-        app:layout_constraintEnd_toEndOf="@+id/GifImage"
-        app:layout_constraintStart_toStartOf="@+id/GifImage"
-        app:layout_constraintTop_toTopOf="@+id/GifImage" />
+        app:layout_constraintBottom_toBottomOf="@+id/gifView"
+        app:layout_constraintEnd_toEndOf="@+id/gifView"
+        app:layout_constraintTop_toTopOf="@+id/gifView" />
+
+    <VideoView
+        android:id="@+id/gifView"
+        android:layout_width="235dp"
+        android:layout_height="237dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:background="@android:drawable/ic_menu_slideshow"
+        android:backgroundTint="#F3FFFFFF"
+        app:layout_constraintBottom_toBottomOf="@+id/view"
+        app:layout_constraintEnd_toEndOf="@+id/view"
+        app:layout_constraintHorizontal_bias="0.536"
+        app:layout_constraintStart_toStartOf="@+id/view"
+        app:layout_constraintTop_toBottomOf="@+id/textView_Gif"
+        app:layout_constraintVertical_bias="0.094" />
 
 </android.support.constraint.ConstraintLayout>

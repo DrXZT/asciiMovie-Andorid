@@ -1,12 +1,9 @@
 package com.asciimovie.drxzt.asciimovie.util;
 
-import android.database.Cursor;
 import android.net.Uri;
-import android.provider.MediaStore;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.StringReader;
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -22,7 +19,6 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
-import okhttp3.ResponseBody;
 
 
 

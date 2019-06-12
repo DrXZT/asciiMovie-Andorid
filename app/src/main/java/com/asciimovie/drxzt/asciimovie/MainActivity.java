@@ -18,6 +18,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
+import android.widget.VideoView;
 
 import com.asciimovie.drxzt.asciimovie.util.ClientUploadUtils;
 
@@ -27,7 +28,7 @@ public class MainActivity extends AppCompatActivity {
 
     private Button changeButton;
     private Button chooseButton;
-    private ImageView gifImage;
+    private VideoView gifView;
 
 
     private static final int CROP_PHOTO = 102;
@@ -42,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         chooseButton=findViewById(R.id.Choose_button);
         changeButton=(Button)findViewById(R.id.change_button);
-        gifImage=(ImageView)findViewById(R.id.GifImage);
+        gifView=findViewById(R.id.gifView);
         requestWritePermission();
         initData(savedInstanceState);
         chooseButton.setOnClickListener(new View.OnClickListener() {
@@ -59,12 +60,12 @@ public class MainActivity extends AppCompatActivity {
                     toast("没有选择文件");
                     return;
                 }
-
                     new Thread(){
                         public void run() {
 
                             try {
                                 String json = clientUploadUtils.upload("http://192.168.1.102:8080/index/gif/getFile", ImgUrl,getImagePath(ImgUrl));
+
                             }catch (Exception e){
                                 toast("文件上传异常");
                             }
@@ -159,7 +160,7 @@ public class MainActivity extends AppCompatActivity {
             toast("url为空");
             return;
         }
-        gifImage.setImageURI(ImgUrl);
+        gifView.setVideoURI(ImgUrl);
         ImgUrl.getPath();
 
     }
