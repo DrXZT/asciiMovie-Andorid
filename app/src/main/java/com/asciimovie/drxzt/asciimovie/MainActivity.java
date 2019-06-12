@@ -6,29 +6,32 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.annotation.RequiresApi;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.webkit.WebView;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.Toast;
-import android.widget.VideoView;
 
 import com.asciimovie.drxzt.asciimovie.util.ClientUploadUtils;
 
 import java.io.File;
 
+import pl.droidsonroids.gif.GifImageView;
+
 public class MainActivity extends AppCompatActivity {
 
     private Button changeButton;
     private Button chooseButton;
-    private VideoView gifView;
+    private GifImageView gifView;
 
 
     private static final int CROP_PHOTO = 102;
@@ -37,6 +40,7 @@ public class MainActivity extends AppCompatActivity {
     private ClientUploadUtils clientUploadUtils= new ClientUploadUtils();
 
     private static final int WRITE_PERMISSION = 0x01;
+    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,7 +56,6 @@ public class MainActivity extends AppCompatActivity {
                 showChooseDialog();
             }
         });
-
         changeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -64,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
                         public void run() {
 
                             try {
-                                String json = clientUploadUtils.upload("http://192.168.1.102:8080/index/gif/getFile", ImgUrl,getImagePath(ImgUrl));
+                                String json = clientUploadUtils.upload("http://192.168.1.105:8080/Android/gif/getFile", ImgUrl,getImagePath(ImgUrl));
 
                             }catch (Exception e){
                                 toast("文件上传异常");
@@ -98,6 +101,7 @@ public class MainActivity extends AppCompatActivity {
                 break;
         }
     }
+    @RequiresApi(api = Build.VERSION_CODES.M)
     private void requestWritePermission() {
         if (checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, WRITE_PERMISSION);
@@ -160,8 +164,7 @@ public class MainActivity extends AppCompatActivity {
             toast("url为空");
             return;
         }
-        gifView.setVideoURI(ImgUrl);
-        ImgUrl.getPath();
+        gifView.setImageURI(ImgUrl);
 
     }
 

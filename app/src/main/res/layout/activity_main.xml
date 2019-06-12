@@ -25,11 +25,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="48dp"
-        android:layout_marginTop="28dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
         android:background="@drawable/button_circle_shape"
         android:text="@string/SelectImage"
         android:textColor="#FFFFFF"
         android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="@+id/view"
         app:layout_constraintStart_toStartOf="@+id/view"
         app:layout_constraintTop_toBottomOf="@+id/gifView" />
 
@@ -38,12 +40,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="28dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
         android:background="@drawable/button_circle_shape"
         android:text="@string/Changeimage"
         android:textColor="#FFFFFF"
         android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="@+id/view"
         app:layout_constraintEnd_toEndOf="@+id/view"
         app:layout_constraintHorizontal_bias="0.39"
         app:layout_constraintStart_toEndOf="@+id/Choose_button"
@@ -91,26 +95,25 @@
     <ProgressBar
         android:id="@+id/progressBar"
         style="?android:attr/progressBarStyle"
-        android:layout_width="119dp"
-        android:layout_height="106dp"
+        android:layout_width="129dp"
+        android:layout_height="130dp"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="@+id/gifView"
         app:layout_constraintEnd_toEndOf="@+id/gifView"
+        app:layout_constraintStart_toStartOf="@+id/gifView"
         app:layout_constraintTop_toTopOf="@+id/gifView" />
 
-    <VideoView
+    <pl.droidsonroids.gif.GifImageView
         android:id="@+id/gifView"
-        android:layout_width="235dp"
-        android:layout_height="237dp"
+        android:layout_width="288dp"
+        android:layout_height="243dp"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
-        android:background="@android:drawable/ic_menu_slideshow"
-        android:backgroundTint="#F3FFFFFF"
         app:layout_constraintBottom_toBottomOf="@+id/view"
         app:layout_constraintEnd_toEndOf="@+id/view"
-        app:layout_constraintHorizontal_bias="0.536"
         app:layout_constraintStart_toStartOf="@+id/view"
         app:layout_constraintTop_toBottomOf="@+id/textView_Gif"
-        app:layout_constraintVertical_bias="0.094" />
+        app:layout_constraintVertical_bias="0.115" />
+
 
 </android.support.constraint.ConstraintLayout>
