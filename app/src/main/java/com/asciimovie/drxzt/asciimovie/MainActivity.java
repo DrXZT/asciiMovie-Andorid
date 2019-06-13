@@ -18,6 +18,7 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.asciimovie.drxzt.asciimovie.util.ClientUploadUtils;
@@ -31,6 +32,7 @@ public class MainActivity extends AppCompatActivity {
     private Button changeButton;
     private Button chooseButton;
     private GifImageView gifView;
+    private ProgressBar progressBar;
 
 
     private static final int CROP_PHOTO = 102;
@@ -44,8 +46,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        chooseButton=findViewById(R.id.Choose_button);
+        chooseButton =findViewById(R.id.Choose_button);
         changeButton= findViewById(R.id.change_button);
+        progressBar= findViewById(R.id.progressBar);
         gifView=findViewById(R.id.gifView);
         requestWritePermission();
         initData(savedInstanceState);
@@ -58,21 +61,26 @@ public class MainActivity extends AppCompatActivity {
         changeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(ImgUrl==null){
-                    toast("没有选择文件");
-                    return;
+                if(progressBar.getVisibility() == View.GONE){
+                    if(ImgUrl==null){
+                        toast("没有选择文件");
+                        return;
+                    }
+//                    new Thread(){
+//                        public void run() {
+//
+//                            try {
+//                                String json = clientUploadUtils.upload("http://192.168.1.105:8080/Android/gif/getFile", ImgUrl,getImagePath(ImgUrl));
+//
+//                            }catch (Exception e){
+//                                toast("文件上传异常");
+//                            }
+//                        }
+//                    }.start();
+                    progressBar.setVisibility(View.VISIBLE);
+                    changeButton.setVisibility(View.GONE);
+                    chooseButton.setVisibility(View.GONE);
                 }
-                    new Thread(){
-                        public void run() {
-
-                            try {
-                                String json = clientUploadUtils.upload("http://192.168.1.105:8080/Android/gif/getFile", ImgUrl,getImagePath(ImgUrl));
-
-                            }catch (Exception e){
-                                toast("文件上传异常");
-                            }
-                        }
-                    }.start();
             }
         });
     }
@@ -86,18 +94,13 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
 
-        switch (requestCode) {
-            case CROP_PHOTO:
-                if (resultCode == RESULT_OK) {
+        if (requestCode == CROP_PHOTO) {
+            if (resultCode == RESULT_OK) {
 
-                    if (intent != null) {
-                        setPicToView(intent);
-                    }
+                if (intent != null) {
+                    setPicToView(intent);
                 }
-                break;
-
-            default:
-                break;
+            }
         }
     }
     @RequiresApi(api = Build.VERSION_CODES.M)
