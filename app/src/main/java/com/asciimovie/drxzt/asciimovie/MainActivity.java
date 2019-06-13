@@ -21,7 +21,10 @@ import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.Toast;
 
+
 import com.asciimovie.drxzt.asciimovie.util.ClientUploadUtils;
+
+import org.json.JSONObject;
 
 import java.io.File;
 
@@ -67,7 +70,14 @@ public class MainActivity extends AppCompatActivity {
                         public void run() {
 
                             try {
-                                String json = clientUploadUtils.upload("http://192.168.1.105:8080/Android/gif/getFile", ImgUrl,getImagePath(ImgUrl));
+                                String json = clientUploadUtils.upload("http://192.168.1.107:8080/Android/gif/getFile", ImgUrl,getImagePath(ImgUrl));
+                                JSONObject jsonObject =new JSONObject(json);
+                                if(jsonObject.getInt("code")!=200){
+                                    toast(jsonObject.getString("msg"));
+                                }else {
+                                    Uri imgUrl = Uri.parse(jsonObject.getString("data"));
+                                    gifView.setImageURI(imgUrl);
+                                }
 
                             }catch (Exception e){
                                 toast("文件上传异常");
