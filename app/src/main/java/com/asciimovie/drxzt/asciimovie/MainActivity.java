@@ -70,7 +70,7 @@ public class MainActivity extends AppCompatActivity {
                         public void run() {
 
                             try {
-                                String json = clientUploadUtils.upload("http://192.168.1.105:8080/Android/gif/getFile", ImgUrl,getImagePath(ImgUrl));
+                                String json = clientUploadUtils.upload("http://192.168.1.107:8080/Android/gif/getFile", ImgUrl,getImagePath(ImgUrl));
 
                             }catch (Exception e){
                                 toast("文件上传异常");
