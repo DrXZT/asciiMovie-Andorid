@@ -72,13 +72,16 @@ public class MainActivity extends AppCompatActivity {
                         public void run() {
 
                             try {
-                                String json = clientUploadUtils.upload("http://192.168.1.107:8080/Android/gif/getFile", ImgUrl,getImagePath(ImgUrl));
+                                String json = clientUploadUtils.upload("http://192.168.1.107:8080/Android/gif/getFile", getImagePath(ImgUrl));
                                 JSONObject jsonObject =new JSONObject(json);
                                 if(jsonObject.getInt("code")!=200){
                                     toast(jsonObject.getString("msg"));
                                 }else {
-                                    Uri imgUrl = Uri.parse(jsonObject.getString("data"));
-                                    gifView.setImageURI(imgUrl);
+                                    Uri uri =Uri.parse(jsonObject.getString("data"));
+                                    gifView.setImageURI(uri);
+                                    progressBar.setVisibility(View.GONE);
+                                    changeButton.setVisibility(View.VISIBLE);
+                                    chooseButton.setVisibility(View.VISIBLE);
                                 }
 
                             }catch (Exception e){
@@ -148,7 +151,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initData(Bundle savedInstanceState) {
-        if (savedInstanceState != null && savedInstanceState.containsKey("tempFile")) {
+        if (savedInstanceState   != null && savedInstanceState.containsKey("tempFile")) {
             tempFile = (File) savedInstanceState.getSerializable("tempFile");
         }else{
             toast(checkDirPath(Environment.getExternalStorageDirectory().getPath()+"/asciiMovie/image/"));

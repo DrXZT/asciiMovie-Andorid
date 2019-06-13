@@ -1,10 +1,17 @@
 package com.asciimovie.drxzt.asciimovie.util;
 
-import android.net.Uri;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.Environment;
+import android.util.Log;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
+import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
@@ -12,6 +19,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
@@ -20,15 +28,22 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
+import static android.content.ContentValues.TAG;
 
 
 public class ClientUploadUtils {
-    public String upload(String url, Uri fileUrl,String filePath) throws Exception {
-        String fileName=getFileName(fileUrl.toString());
-        OkHttpClient client = new OkHttpClient();
+    public String upload(String url, String filePath) throws Exception {
+        String fileName=filePath.substring(url.lastIndexOf("/") + 1);
+        OkHttpClient client = new OkHttpClient()
+                .newBuilder()
+                .connectTimeout(20, TimeUnit.SECONDS)
+                .writeTimeout(3,TimeUnit.MINUTES)
+                .readTimeout(3, TimeUnit.MINUTES)
+                .retryOnConnectionFailure(true)
+                .build();
         RequestBody requestBody = new MultipartBody.Builder()
                 .setType(MultipartBody.FORM)
-                .addFormDataPart("file", fileName,
+                .addFormDataPart("img", fileName,
                         RequestBody.create(MediaType.parse("multipart/form-data"), new File(filePath)))
                 .build();
 
@@ -99,5 +114,78 @@ public class ClientUploadUtils {
         return filename;
     }
 
+    public Bitmap getBitmap(String imgUrl) {
+        InputStream inputStream=null;
+        ByteArrayOutputStream outputStream=null;
+        URL url = null;
+        try {
+            url=new URL(imgUrl);
+            HttpURLConnection httpURLConnection=(HttpURLConnection) url.openConnection();
+            httpURLConnection.setRequestMethod("GET");
+            httpURLConnection.setReadTimeout(2000);
+            httpURLConnection.connect();
+            if(httpURLConnection.getResponseCode()==200) {
+                //网络连接成功
+                inputStream = httpURLConnection.getInputStream();
+                outputStream = new ByteArrayOutputStream();
+                byte buffer[] = new byte[1024 * 8];
+                int len = -1;
+                while ((len = inputStream.read(buffer)) != -1) {
+                    outputStream.write(buffer, 0, len);
+                }
+                byte[] bu = outputStream.toByteArray();
+                Bitmap bitmap = BitmapFactory.decodeByteArray(bu, 0, bu.length);
+                return bitmap;
+            }else {
+                Log.d(TAG,"网络连接失败----"+httpURLConnection.getResponseCode());
+            }
+        } catch (Exception e) {
+            // TODO: handle exception
+        }finally{
+            if(inputStream!=null){
+                try {
+                    inputStream.close();
+                } catch (IOException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+            }
+            if(outputStream!=null){
+                try {
+                    outputStream.close();
+                } catch (IOException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+            }
+        }
+        return null;
+    }
+    public void saveImageToGallery(Bitmap bmp) {
+        if (bmp==null){
+            Log.e(TAG,"bitmap---为空");
+            return ;
+        }
+        String galleryPath= Environment.getExternalStorageDirectory()
+                + File.separator + Environment.DIRECTORY_DCIM
+                +File.separator+"Camera"+File.separator;
+        String fileName = +System.currentTimeMillis() + ".gif";
+        File file = new File(galleryPath, fileName);
+        try {
+            FileOutputStream fos = new FileOutputStream(file);
+            //通过io流的方式来压缩保存图片
+            boolean isSuccess = bmp.compress(Bitmap.CompressFormat.JPEG, 60, fos);
+            fos.flush();
+            fos.close();
+            if (isSuccess) {
+                Log.e(TAG,"图片保存成功 保存在:" + file.getPath());
+            } else {
+                Log.e(TAG,"图片保存失败");
+            }
+        } catch (IOException e) {
+            Log.e(TAG,"保存图片找不到文件夹");
+            e.printStackTrace();
+        }
+    }
 
 }
