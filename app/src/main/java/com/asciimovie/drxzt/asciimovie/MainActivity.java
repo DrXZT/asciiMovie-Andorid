@@ -66,17 +66,17 @@ public class MainActivity extends AppCompatActivity {
                         toast("没有选择文件");
                         return;
                     }
-//                    new Thread(){
-//                        public void run() {
-//
-//                            try {
-//                                String json = clientUploadUtils.upload("http://192.168.1.105:8080/Android/gif/getFile", ImgUrl,getImagePath(ImgUrl));
-//
-//                            }catch (Exception e){
-//                                toast("文件上传异常");
-//                            }
-//                        }
-//                    }.start();
+                    new Thread(){
+                        public void run() {
+
+                            try {
+                                String json = clientUploadUtils.upload("http://192.168.1.105:8080/Android/gif/getFile", ImgUrl,getImagePath(ImgUrl));
+
+                            }catch (Exception e){
+                                toast("文件上传异常");
+                            }
+                        }
+                    }.start();
                     progressBar.setVisibility(View.VISIBLE);
                     changeButton.setVisibility(View.GONE);
                     chooseButton.setVisibility(View.GONE);
