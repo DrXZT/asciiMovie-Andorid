@@ -17,7 +17,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
-import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.Toast;
 
@@ -46,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         chooseButton=findViewById(R.id.Choose_button);
-        changeButton=(Button)findViewById(R.id.change_button);
+        changeButton= findViewById(R.id.change_button);
         gifView=findViewById(R.id.gifView);
         requestWritePermission();
         initData(savedInstanceState);
