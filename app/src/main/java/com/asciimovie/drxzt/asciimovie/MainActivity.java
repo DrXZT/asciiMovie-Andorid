@@ -21,6 +21,7 @@ import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.asciimovie.drxzt.asciimovie.util.AlxGifHelper;
 import com.asciimovie.drxzt.asciimovie.util.ClientUploadUtils;
 
 import org.json.JSONObject;
@@ -43,6 +44,7 @@ public class MainActivity extends AppCompatActivity {
     private ClientUploadUtils clientUploadUtils= new ClientUploadUtils();
 
     private static final int WRITE_PERMISSION = 0x01;
+    private static String url;
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,8 +52,9 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         chooseButton =findViewById(R.id.Choose_button);
         changeButton= findViewById(R.id.change_button);
-        progressBar= findViewById(R.id.progressBar);
+        progressBar=findViewById(R.id.progressBar);
         gifView=findViewById(R.id.gifView);
+     //  AlxGifHelper.displayImage("http://192.168.43.122:8080/img/AscIId1b29bbd-c835-4a52-a445-9b447749cc07.gif",gifView,0);//最后一个参数传0表示不缩放gif的大小，显示原始尺
         requestWritePermission();
         initData(savedInstanceState);
         chooseButton.setOnClickListener(new View.OnClickListener() {
@@ -63,35 +66,35 @@ public class MainActivity extends AppCompatActivity {
         changeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(progressBar.getVisibility() == View.GONE){
-                    if(ImgUrl==null){
+                if (progressBar.getVisibility() == View.GONE) {
+                    if (ImgUrl == null) {
                         toast("没有选择文件");
                         return;
                     }
-                    new Thread(){
+                    new Thread() {
                         public void run() {
-
                             try {
-                                String json = clientUploadUtils.upload("http://192.168.1.107:8080/Android/gif/getFile", getImagePath(ImgUrl));
-                                JSONObject jsonObject =new JSONObject(json);
-                                if(jsonObject.getInt("code")!=200){
+                                String json = clientUploadUtils.upload("http://192.168.43.122:8080/Android/gif/getFile", getImagePath(ImgUrl));
+                                JSONObject jsonObject = new JSONObject(json);
+                                if (jsonObject.getInt("code") != 200) {
                                     toast(jsonObject.getString("msg"));
-                                }else {
-                                    Uri uri =Uri.parse(jsonObject.getString("data"));
-                                    gifView.setImageURI(uri);
-                                    progressBar.setVisibility(View.GONE);
-                                    changeButton.setVisibility(View.VISIBLE);
-                                    chooseButton.setVisibility(View.VISIBLE);
+                                } else {
+                                    url = jsonObject.getString("data");
                                 }
-
-                            }catch (Exception e){
-                                toast("文件上传异常");
+                            } catch (Exception e) {
+                                Log.i("erro", "文件上传异常");
+                                url="1";
                             }
                         }
                     }.start();
-                    progressBar.setVisibility(View.VISIBLE);
-                    changeButton.setVisibility(View.GONE);
-                    chooseButton.setVisibility(View.GONE);
+                    while (true) {
+                        if (url != null) {
+                            if (url.equals("1")) break;
+                            AlxGifHelper.displayImage(url, gifView, 0);//最后一个参数传0表示不缩放gif的大小，显示原始尺
+                            url = null;
+                            break;
+                        }
+                    }
                 }
             }
         });
